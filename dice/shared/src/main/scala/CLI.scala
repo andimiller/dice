@@ -7,6 +7,7 @@ object CLI {
   enum CLICommand:
     case RollCmd(rolls: NonEmptyList[Roll])
     case AnalyseCmd(rolls: NonEmptyList[Roll])
+    case ReplCmd()
 
 
   given Argument[Roll] = Argument.from("1d6") { s =>
@@ -17,7 +18,8 @@ object CLI {
 
   val roll = Opts.subcommand("roll", "Roll some dice", true)(rolls).map(CLICommand.RollCmd(_))
   val analyse = Opts.subcommand("analyse", "Analyse some dice", true)(rolls).map(CLICommand.AnalyseCmd(_))
+  val repl = Opts.subcommand("repl", "Start the dice REPL", true)(Opts.unit).as(CLICommand.ReplCmd())
 
-  val cli = Command("dice", "a utility for dice", true)(roll.orElse(analyse))
+  val cli = Command("dice", "a utility for dice", true)(roll.orElse(analyse).orElse(repl))
 
 }

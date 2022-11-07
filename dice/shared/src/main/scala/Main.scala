@@ -11,6 +11,7 @@ object Main extends IOApp {
       case Right(cmd) => cmd match {
         case CLICommand.RollCmd(rolls) => Logic.roller[IO](rolls).flatMap(IO.println).as(ExitCode.Success)
         case CLICommand.AnalyseCmd(rolls) => IO.println(Logic.analyse(rolls)).as(ExitCode.Success)
+        case CLICommand.ReplCmd() => Repl[IO].as(ExitCode.Success)
       }
     }
   } yield exitCode
